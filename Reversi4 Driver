@@ -1,0 +1,65 @@
+package yao.samantha;
+
+import java.util.Scanner;
+
+public class ReversiDriver {
+
+	public static void main(String[] args) {
+		Board board = new Board();
+		Scanner in = new Scanner(System.in);
+		boolean gameOver = false;
+
+		System.out.println("Welcome to Reversi");
+		System.out.println("To play, enter coordinates on separate lines");
+		board.displayBoard();
+		while (!gameOver) {
+
+			System.out.println("Your Turn");
+			int x = getInt(in, "X-coordinate:");
+			int y = getInt(in, "Y-coordinate:");
+			board.getBoard()[x][y].setState(CellState.PLAYER);
+			board.displayBoard();
+			checkGameOver(gameOver, board);
+			System.out.println("CPU's Turn");
+			// call some AI method
+			board.displayBoard();
+			checkGameOver(gameOver, board);
+		}
+
+	}
+
+	public static void checkGameOver(boolean gameOver, Board board) {
+		boolean hasSpace = false;
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; i < 8; i++) {
+				if (board.getBoard()[i][j].getState() == CellState.EMPTY) {
+					hasSpace = true;
+				}
+			}
+		}
+		if (!hasSpace) {
+			gameOver = true;
+		}
+	}
+
+	public static int getInt(Scanner input, String prompt) {
+		boolean valid = false;
+		int x = 66;
+		while (!valid) {
+			System.out.println(prompt);
+			if (input.hasNextInt()) {
+				x = input.nextInt();
+				if (x < 8) {
+					valid = true;
+				} else {
+					System.out.println("Coordinate not within range of board");
+				}
+			} else {
+				input.nextLine();
+				System.out.println("Not a valid integer. Try again.");
+			}
+		}
+		return x;
+	}
+
+}
